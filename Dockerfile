@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 
 # Usamos el directorio actual como directorio de trabajo
-WORKDIR /app
+WORKDIR /
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
