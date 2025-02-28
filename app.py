@@ -1,11 +1,14 @@
 import streamlit as st
 import requests
 
+# Configuración de la página (debe ser lo primero)
+st.set_page_config(page_title='Consulta de API Personalizada', page_icon=':bar_chart:')
+
 # Función para realizar la solicitud POST a la API
 def realizar_solicitud_post(url, data):
     try:
         response = requests.post(url, json=data)
-        # Considera añadir headers si necesitas pasar un token de autorización
+        # Considerar añadir headers si necesitas pasar un token de autorización
         # Ejemplo: response = requests.post(url, json=data, headers={"Authorization": "Bearer tu_token_aqui"})
         if response.status_code == 200:
             return True, response.json()
@@ -14,19 +17,52 @@ def realizar_solicitud_post(url, data):
     except Exception as e:
         return False, str(e)
 
-
+# Título de la aplicación
 st.title("Consulta de API para Modelo de Adultos")
+
+# Estilo CSS personalizado
+st.markdown(
+    """
+    <style>
+    .main {
+        background-color: #f0f2f6;  /* Color de fondo principal */
+    }
+    h1 {
+        color: #164A41;  /* Color del título */
+    }
+    .stButton>button {
+        background-color: #164A41;
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # Formulario para introducir los datos requeridos por la API
 with st.form("api_form"):
     age = st.number_input("Edad", min_value=1, value=21)
-    workclass = st.selectbox("Clase de trabajo", ["Private", "Self-emp-not-inc", "Self-emp-inc", "Federal-gov", "Local-gov", "State-gov", "Without-pay", "Never-worked"])
+    workclass = st.selectbox("Clase de trabajo", ["Private", "Self-emp-not-inc", "Self-emp-inc",
+                                                  "Federal-gov", "Local-gov", "State-gov",
+                                                  "Without-pay", "Never-worked"])
     fnlwgt = st.number_input("fnlwgt", value=346478)
-    education = st.selectbox("Educación", ["Bachelors", "Some-college", "11th", "HS-grad", "Prof-school", "Assoc-acdm", "Assoc-voc", "9th", "7th-8th", "12th", "Masters", "1st-4th", "10th", "Doctorate", "5th-6th", "Preschool"])
+    education = st.selectbox("Educación", ["Bachelors", "Some-college", "11th", "HS-grad",
+                                           "Prof-school", "Assoc-acdm", "Assoc-voc",
+                                           "9th", "7th-8th", "12th", "Masters",
+                                           "1st-4th", "10th", "Doctorate",
+                                           "5th-6th", "Preschool"])
     education_num = st.number_input("Número de educación", min_value=1, max_value=16, value=10)
-    marital_status = st.selectbox("Estado civil", ["Married-civ-spouse", "Divorced", "Never-married", "Separated", "Widowed", "Married-spouse-absent", "Married-AF-spouse"])
-    occupation = st.selectbox("Ocupación", ["Tech-support", "Craft-repair", "Other-service", "Sales", "Exec-managerial", "Prof-specialty", "Handlers-cleaners", "Machine-op-inspct", "Adm-clerical", "Farming-fishing", "Transport-moving", "Priv-house-serv", "Protective-serv", "Armed-Forces"])
-    relationship = st.selectbox("Relación", ["Wife", "Own-child", "Husband", "Not-in-family", "Other-relative", "Unmarried"])
+    marital_status = st.selectbox("Estado civil", ["Married-civ-spouse", "Divorced",
+                                                   "Never-married", "Separated",
+                                                   "Widowed", "Married-spouse-absent",
+                                                   "Married-AF-spouse"])
+    occupation = st.selectbox("Ocupación", ["Tech-support", "Craft-repair", "Other-service",
+                                            "Sales", "Exec-managerial", "Prof-specialty",
+                                            "Handlers-cleaners", "Machine-op-inspct",
+                                            "Adm-clerical", "Farming-fishing", "Transport-moving",
+                                            "Priv-house-serv", "Protective-serv", "Armed-Forces"])
+    relationship = st.selectbox("Relación", ["Wife", "Own-child", "Husband",
+                                             "Not-in-family", "Other-relative", "Unmarried"])
     race = st.selectbox("Raza", ["White", "Asian-Pac-Islander", "Amer-Indian-Eskimo", "Other", "Black"])
     sex = st.selectbox("Sexo", ["Male", "Female"])
     capital_gain = st.number_input("Ganancia de capital", value=4000)
