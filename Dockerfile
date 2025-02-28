@@ -1,9 +1,14 @@
 FROM python:3.11-slim
 
 # Usamos el directorio actual como directorio de trabajo
-WORKDIR /api
+WORKDIR /app
 
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
+# Instalar Poetry 2.1.1
 RUN pip install poetry==1.8.2
 
 # Agregar Poetry al PATH
@@ -21,8 +26,8 @@ RUN poetry lock && poetry install
 # Copiar el resto de la aplicación
 COPY . .
 
-# Exponer el puerto de la API
-EXPOSE 8000
+# Exponer el puerto de Streamlit
+EXPOSE 8501
 
-# Comando para iniciar la API
-CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Comando para iniciar la aplicación Streamlit
+CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port=8501"]
